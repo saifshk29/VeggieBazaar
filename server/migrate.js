@@ -20,31 +20,29 @@ export async function runMigrations() {
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
         category TEXT NOT NULL,
-        price TEXT NOT NULL,
+        price NUMERIC NOT NULL,
         unit TEXT NOT NULL,
-        imageUrl TEXT NOT NULL,
-        description TEXT
+        image_url TEXT
       );
-      
-      CREATE TYPE order_status AS ENUM ('pending', 'in_progress', 'delivered');
       
       CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY,
-        orderId TEXT NOT NULL UNIQUE,
-        customerName TEXT NOT NULL,
-        customerEmail TEXT NOT NULL,
-        customerPhone TEXT NOT NULL,
-        deliveryAddress TEXT NOT NULL,
-        status order_status NOT NULL DEFAULT 'pending',
-        createdAt TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+        order_id TEXT NOT NULL UNIQUE,
+        customer_name TEXT NOT NULL,
+        customer_phone TEXT NOT NULL,
+        customer_address TEXT NOT NULL,
+        city TEXT NOT NULL,
+        pincode TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending',
+        created_at TIMESTAMP NOT NULL DEFAULT NOW()
       );
       
       CREATE TABLE IF NOT EXISTS order_items (
         id SERIAL PRIMARY KEY,
-        orderId INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-        productId INTEGER NOT NULL REFERENCES products(id),
-        quantity TEXT NOT NULL,
-        price TEXT NOT NULL
+        order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+        product_id INTEGER NOT NULL REFERENCES products(id),
+        quantity NUMERIC NOT NULL,
+        price NUMERIC NOT NULL
       );
     `);
     

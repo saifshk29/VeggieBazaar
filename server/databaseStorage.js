@@ -261,54 +261,12 @@ export class DatabaseStorage {
         
         // Seed some initial products
         const seedProducts = [
-          {
-            name: "Tomatoes",
-            category: "Vegetable",
-            price: "2.99",
-            unit: "kg",
-            imageUrl: "https://images.unsplash.com/photo-1592924357228-91f67da88d6c?auto=format&fit=crop&q=80&w=1000",
-            description: "Fresh, ripe tomatoes, perfect for salads and cooking."
-          },
-          {
-            name: "Apples",
-            category: "Fruit",
-            price: "3.49",
-            unit: "kg",
-            imageUrl: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&q=80&w=1000",
-            description: "Crisp, sweet apples. An excellent healthy snack."
-          },
-          {
-            name: "Potatoes",
-            category: "Vegetable",
-            price: "1.99",
-            unit: "kg",
-            imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=1000",
-            description: "Versatile potatoes, great for roasting, mashing or frying."
-          },
-          {
-            name: "Bananas",
-            category: "Fruit",
-            price: "1.79",
-            unit: "kg",
-            imageUrl: "https://images.unsplash.com/photo-1603833665858-e61d17a86224?auto=format&fit=crop&q=80&w=1000",
-            description: "Energy-packed bananas, perfect for a quick nutrition boost."
-          },
-          {
-            name: "Carrots",
-            category: "Vegetable",
-            price: "1.49",
-            unit: "kg",
-            imageUrl: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=1000",
-            description: "Fresh carrots, packed with vitamins and great for snacking."
-          },
-          {
-            name: "Oranges",
-            category: "Fruit",
-            price: "2.99",
-            unit: "kg",
-            imageUrl: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?auto=format&fit=crop&q=80&w=1000",
-            description: "Juicy oranges, rich in vitamin C and bursting with flavor."
-          }
+          { name: "Tomatoes", category: "Vegetable", price: "45", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1588391990846-dd96ba847bc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+          { name: "Potatoes", category: "Vegetable", price: "30", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+          { name: "Onions", category: "Vegetable", price: "35", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+          { name: "Apples", category: "Fruit", price: "120", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1528825871115-3581a5387919?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+          { name: "Bananas", category: "Fruit", price: "50", unit: "dozen", imageUrl: "https://images.unsplash.com/photo-1547514701-42782101795e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+          { name: "Carrots", category: "Vegetable", price: "60", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
         ];
         
         await db.insert(products).values(seedProducts);

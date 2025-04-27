@@ -1,12 +1,12 @@
 import express from "express";
 import { createServer } from "http";
-import { storage } from "./storage";
+import { storage } from "./storage.js";
 import { 
   insertProductSchema, 
   insertOrderSchema, 
   insertOrderItemSchema, 
   orderStatusEnum
-} from "@shared/schema";
+} from "../shared/schema.js";
 import { z } from "zod";
 
 // Setup session middleware

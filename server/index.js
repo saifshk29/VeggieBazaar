@@ -2,6 +2,7 @@ import express from "express";
 import { registerRoutes } from "./routes.js";
 import { setupVite, serveStatic, log } from "./vite.js";
 import { runMigrations } from "./migrate.js";
+import { initDatabaseAndSeed } from "./storage.js";
 
 const app = express();
 app.use(express.json());
@@ -39,16 +40,26 @@ app.use((req, res, next) => {
 
 (async () => {
   try {
-    // Run database migrations
+    // Initialize database and run migrations
     log("Setting up database...");
-    const migrationsSuccessful = await runMigrations();
     
+    // Step 1: Run migrations to create tables
+    const migrationsSuccessful = await runMigrations();
     if (!migrationsSuccessful) {
-      log("Database setup failed. Server may not function correctly.");
+      log("Database migrations failed. Server may not function correctly.");
     } else {
-      log("Database setup completed successfully.");
+      log("Database migrations completed successfully.");
     }
     
+    // Step 2: Initialize database storage and seed data
+    const dbInitialized = await initDatabaseAndSeed();
+    if (!dbInitialized) {
+      log("Database initialization failed. Server may not function correctly.");
+    } else {
+      log("Database initialization completed successfully.");
+    }
+    
+    // Step 3: Register routes and start the server
     const server = await registerRoutes(app);
 
     app.use((err, _req, res, _next) => {
