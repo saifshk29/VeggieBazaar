@@ -52,24 +52,33 @@ export default function ProductCard({ product, onSelect }) {
   
   return (
     <Card
-      className={`overflow-hidden hover:shadow-md transition-shadow duration-200 ${isHovered ? 'shadow-md' : 'shadow-sm'}`}
+      className={`overflow-hidden hover:shadow-lg transition-all duration-300 ${isHovered ? 'shadow-md transform -translate-y-1' : 'shadow-sm'} group rounded-xl border border-gray-100`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="h-48 w-full overflow-hidden">
+      <div className="h-48 w-full overflow-hidden relative">
+        <div className="absolute top-2 right-2 z-10">
+          <span className="inline-block px-2 py-1 text-xs font-semibold bg-green-500 text-white rounded-full">
+            {product.category}
+          </span>
+        </div>
         <img 
-          className="h-full w-full object-cover transform transition-transform duration-200 ease-in-out hover:scale-105"
+          className="h-full w-full object-cover transform transition-transform duration-300 ease-in-out group-hover:scale-110"
           src={product.imageUrl} 
           alt={product.name}
         />
       </div>
       <CardContent className="p-4">
-        <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-        <div className="mt-1 flex justify-between items-center">
-          <p className="text-gray-600">{formatCurrency(Number(product.price))}/{product.unit}</p>
+        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors duration-200">{product.name}</h3>
+        <div className="mt-2 mb-2 flex items-center">
+          <div className="mr-1 text-yellow-500">★★★★★</div>
+          <span className="text-xs text-gray-500">5.0</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="text-green-600 font-bold">{formatCurrency(Number(product.price))}/{product.unit}</p>
           <Button
             variant="ghost"
-            className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+            className="text-green-600 hover:text-green-700 hover:bg-green-50 text-sm font-medium rounded-full"
             onClick={handleAddToOrder}
           >
             Add to Order
