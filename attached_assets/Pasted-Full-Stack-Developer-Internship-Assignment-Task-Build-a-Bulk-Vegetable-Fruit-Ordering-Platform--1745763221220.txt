@@ -1,0 +1,71 @@
+Full-Stack Developer Internship Assignment
+📝 Task: Build a Bulk Vegetable/Fruit Ordering Platform
+📅 Timeline: Submit before Saturday, 27th April 11:59 PM
+🎯 Objective
+Create a web application that facilitates bulk vegetable/fruit orders.
+Buyers can browse available products, place bulk orders, and track their status, while admins
+can manage orders and inventory efficiently.
+
+✅ Requirements
+1. Features
+For Buyers:
+● Browse Products
+○ Display a product catalog with basic details (name, price per unit).
+○ No stock tracking is required (assume infinite availability).
+● Place Orders
+○ Allow buyers to place bulk orders by specifying:
+■ Item name
+■ Quantity
+■ Delivery details (name, contact, address)
+○ Save each order with a unique identifier in the database.
+● Track Orders
+○ View current order status:
+■ Pending – Order has been received.
+■ In Progress – Order is being processed.
+■ Delivered – Order has been delivered.
+
+For Admins:
+● Order Management
+○ View all orders with buyer and delivery details.
+○ Update order status (Pending → In Progress → Delivered).
+● Inventory Management
+○ Add, edit, and remove vegetables/fruits from the catalog.
+○ No stock quantity logic is needed (assume items are always available).
+
+2. Database
+● Use PostgreSQL hosted on Neon.tech.
+● Alternatively, use Docker to containerize a Postgres database.
+● You may use mock data if needed, but PostgreSQL is preferre
+
+3. Frontend
+● Use Next.js (REQUIRED)
+● Build a clean, responsive, and user-friendly interface.
+Pages to include:
+● Product catalog
+● Order placement form
+● Order tracking page
+● Admin dashboard
+
+4. Backend
+● Use Next.js API routes or any framework like Express or Flask.
+● Implement the following endpoints:
+○ GET product catalog
+○ POST place an order
+○ GET order status
+○ PUT update order status (admin)
+○ POST/PUT/DELETE inventory management (admin)
+● Use appropriate HTTP methods (GET, POST, PUT, DELETE).
+
+5. Deployment (Mandatory)
+● Host the project on Vercel (preferred) or Netlify.
+● It must be a Next.js application for uniformity in evaluation.
+
+6. Bonus (Optional)
+● Add authentication (admin login).
+● Email notifications to buyers on order status updates.
+● Use environment variables for API/database configs.
+● Write clean commit history and useful README. i want you to create the app in reactjs and js AND DONT USE TYPESCRIPT AT ALL , these are the features i want generation of unique order if for every order so that it is easier to track there should be admin login so that he can rder Management
+○ View all orders with buyer and delivery details.
+○ Update order status (Pending → In Progress → Delivered).
+● Inventory Management
+○ Add, edit, and remove vegetables/fruits from the catalog. and make sure you are using postgressSQL as database
