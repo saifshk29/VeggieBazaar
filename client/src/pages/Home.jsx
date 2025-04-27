@@ -13,16 +13,27 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeCategory, setActiveCategory] = useState("all");
   
   const { data: products = [], isLoading, error } = useQuery({
     queryKey: ["/api/products"],
   });
 
-  // Filter products based on search term
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter products based on search term and category
+  const filteredProducts = products.filter(product => {
+    // First filter by category
+    const categoryMatch = 
+      activeCategory === "all" || 
+      (activeCategory === "fruit" && product.category.toLowerCase() === "fruit") ||
+      (activeCategory === "vegetable" && product.category.toLowerCase() === "vegetable");
+    
+    // Then filter by search term
+    const searchMatch = 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return categoryMatch && searchMatch;
+  });
 
   // Paginate products
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -34,6 +45,11 @@ export default function Home() {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reset to first page on search
+  };
+
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
+    setCurrentPage(1); // Reset to first page on category change
   };
 
   const handlePageChange = (page) => {
@@ -85,6 +101,31 @@ export default function Home() {
     <div className="py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-semibold text-gray-900 mb-6">Fresh Vegetables & Fruits</h1>
+        
+        {/* Category Filter Tabs */}
+        <div className="flex flex-wrap mb-6 gap-2">
+          <Button 
+            variant={activeCategory === "all" ? "default" : "outline"}
+            onClick={() => handleCategoryChange("all")}
+            className="rounded-full"
+          >
+            All Products
+          </Button>
+          <Button 
+            variant={activeCategory === "vegetable" ? "default" : "outline"}
+            onClick={() => handleCategoryChange("vegetable")}
+            className="rounded-full"
+          >
+            Vegetables
+          </Button>
+          <Button 
+            variant={activeCategory === "fruit" ? "default" : "outline"}
+            onClick={() => handleCategoryChange("fruit")}
+            className="rounded-full"
+          >
+            Fruits
+          </Button>
+        </div>
         
         {/* Search */}
         <div className="mb-6">

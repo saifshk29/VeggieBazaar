@@ -43,20 +43,14 @@ export default function Navbar() {
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link href="/">
-                <a className={`${location === '/' ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
-                  Products
-                </a>
+              <Link href="/" className={`${location === '/' ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
+                Products
               </Link>
-              <Link href="/place-order">
-                <a className={`${location === '/place-order' ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
-                  Place Order
-                </a>
+              <Link href="/place-order" className={`${location === '/place-order' ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
+                Place Order
               </Link>
-              <Link href="/track-order">
-                <a className={`${location.startsWith('/track-order') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
-                  Track Order
-                </a>
+              <Link href="/track-order" className={`${location.startsWith('/track-order') ? 'border-primary-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}>
+                Track Order
               </Link>
             </div>
           </div>
@@ -99,29 +93,26 @@ export default function Navbar() {
       {/* Mobile menu, show/hide based on menu state */}
       <div className={`sm:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`} id="mobile-menu">
         <div className="pt-2 pb-3 space-y-1">
-          <Link href="/">
-            <a 
-              className={`${location === '/' ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Products
-            </a>
+          <Link 
+            href="/" 
+            className={`${location === '/' ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Products
           </Link>
-          <Link href="/place-order">
-            <a 
-              className={`${location === '/place-order' ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Place Order
-            </a>
+          <Link 
+            href="/place-order" 
+            className={`${location === '/place-order' ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Place Order
           </Link>
-          <Link href="/track-order">
-            <a 
-              className={`${location.startsWith('/track-order') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Track Order
-            </a>
+          <Link 
+            href="/track-order" 
+            className={`${location.startsWith('/track-order') ? 'bg-primary-50 border-primary-500 text-primary-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'} block pl-3 pr-4 py-2 border-l-4 text-base font-medium`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Track Order
           </Link>
         </div>
       </div>

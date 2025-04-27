@@ -17,9 +17,11 @@ export function AdminProvider({ children }) {
   });
   
   useEffect(() => {
-    if (data) {
+    if (data !== undefined) {
       if (data.isAuthenticated) {
         setAdmin(data.admin);
+      } else {
+        setAdmin(null);
       }
       setCheckingAuth(false);
     }
