@@ -1,49 +1,18 @@
+import { eq, and, desc } from 'drizzle-orm';
+import { db } from './db.js';
 import { 
-  admins,
-  products,
-  orders,
+  admins, 
+  products, 
+  orders, 
   orderItems,
   orderStatusEnum
-} from "../shared/schema.js";
-import { db } from './db.js';
-import { eq, and, desc } from 'drizzle-orm';
+} from '../shared/schema.js';
 
-// Storage interface
-export class IStorage {
-  // Admin methods
-  async getAdmin(id) {}
-  async getAdminByUsername(username) {}
-  async createAdmin(admin) {}
-
-  // Product methods
-  async getProducts() {}
-  async getProduct(id) {}
-  async createProduct(product) {}
-  async updateProduct(id, product) {}
-  async deleteProduct(id) {}
-
-  // Order methods
-  async getOrders() {}
-  async getOrder(id) {}
-  async getOrderByOrderId(orderId) {}
-  async createOrder(orderData, items) {}
-  async updateOrderStatus(orderId, status) {}
-  async enrichOrderWithItems(order) {}
-}
-
-// Database-backed storage implementation
-export class DatabaseStorage extends IStorage {
+// Database storage implementation that maintains the same interface as MemStorage
+export class DatabaseStorage {
+  
   constructor() {
-    super();
     console.log("Initializing DatabaseStorage with PostgreSQL...");
-  }
-
-  // Generate a unique order ID
-  generateOrderId() {
-    const prefix = "FB";
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `${prefix}-${timestamp}-${random}`;
   }
 
   // Admin methods
@@ -107,11 +76,11 @@ export class DatabaseStorage extends IStorage {
     }
   }
 
-  async updateProduct(id, product) {
+  async updateProduct(id, productData) {
     try {
       const [updatedProduct] = await db
         .update(products)
-        .set(product)
+        .set(productData)
         .where(eq(products.id, id))
         .returning();
       
@@ -190,34 +159,22 @@ export class DatabaseStorage extends IStorage {
 
   async createOrder(orderData, items) {
     try {
-      // Generate a unique order ID
-      const orderId = this.generateOrderId();
-      
       // Start a transaction to ensure all operations succeed or fail together
       return await db.transaction(async (tx) => {
         // Create the order
         const [order] = await tx
           .insert(orders)
-          .values({
-            ...orderData,
-            orderId,
-            status: "pending",
-            createdAt: new Date()
-          })
+          .values(orderData)
           .returning();
 
         // Create all order items
-        for (const item of items) {
-          const product = await this.getProduct(item.productId);
-          if (product) {
-            await tx.insert(orderItems).values({
-              orderId: order.id,
-              productId: item.productId,
-              quantity: item.quantity.toString(),
-              price: product.price
-            });
-          }
-        }
+        const orderItemValues = items.map(item => ({
+          orderId: order.id,
+          productId: item.productId,
+          quantity: item.quantity
+        }));
+
+        await tx.insert(orderItems).values(orderItemValues);
 
         // Return the full order with items
         return await this.enrichOrderWithItems(order);
@@ -277,7 +234,7 @@ export class DatabaseStorage extends IStorage {
           });
 
           // Calculate the subtotal for this item
-          total += parseFloat(product.price) * parseFloat(item.quantity);
+          total += parseFloat(product.price) * item.quantity;
         }
       }
 
@@ -304,12 +261,54 @@ export class DatabaseStorage extends IStorage {
         
         // Seed some initial products
         const seedProducts = [
-          { name: "Tomatoes", category: "Vegetable", price: "45", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1588391990846-dd96ba847bc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-          { name: "Potatoes", category: "Vegetable", price: "30", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-          { name: "Onions", category: "Vegetable", price: "35", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-          { name: "Apples", category: "Fruit", price: "120", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1528825871115-3581a5387919?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-          { name: "Bananas", category: "Fruit", price: "50", unit: "dozen", imageUrl: "https://images.unsplash.com/photo-1547514701-42782101795e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
-          { name: "Carrots", category: "Vegetable", price: "60", unit: "kg", imageUrl: "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" },
+          {
+            name: "Tomatoes",
+            category: "Vegetable",
+            price: "2.99",
+            unit: "kg",
+            imageUrl: "https://images.unsplash.com/photo-1592924357228-91f67da88d6c?auto=format&fit=crop&q=80&w=1000",
+            description: "Fresh, ripe tomatoes, perfect for salads and cooking."
+          },
+          {
+            name: "Apples",
+            category: "Fruit",
+            price: "3.49",
+            unit: "kg",
+            imageUrl: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&q=80&w=1000",
+            description: "Crisp, sweet apples. An excellent healthy snack."
+          },
+          {
+            name: "Potatoes",
+            category: "Vegetable",
+            price: "1.99",
+            unit: "kg",
+            imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=1000",
+            description: "Versatile potatoes, great for roasting, mashing or frying."
+          },
+          {
+            name: "Bananas",
+            category: "Fruit",
+            price: "1.79",
+            unit: "kg",
+            imageUrl: "https://images.unsplash.com/photo-1603833665858-e61d17a86224?auto=format&fit=crop&q=80&w=1000",
+            description: "Energy-packed bananas, perfect for a quick nutrition boost."
+          },
+          {
+            name: "Carrots",
+            category: "Vegetable",
+            price: "1.49",
+            unit: "kg",
+            imageUrl: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=1000",
+            description: "Fresh carrots, packed with vitamins and great for snacking."
+          },
+          {
+            name: "Oranges",
+            category: "Fruit",
+            price: "2.99",
+            unit: "kg",
+            imageUrl: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?auto=format&fit=crop&q=80&w=1000",
+            description: "Juicy oranges, rich in vitamin C and bursting with flavor."
+          }
         ];
         
         await db.insert(products).values(seedProducts);
@@ -337,28 +336,12 @@ export class DatabaseStorage extends IStorage {
       return false;
     }
   }
-}
 
-// Create database storage instance
-export const storage = new DatabaseStorage();
-
-// Function to initialize the database
-export async function initDatabaseAndSeed() {
-  try {
-    // Test the database connection
-    console.log("Initializing database connection...");
-    const testQuery = await db.execute('SELECT NOW()');
-    console.log(`Database connection successful at ${testQuery.rows[0].now}`);
-    
-    // Seed the database with initial data
-    await storage.seedDatabase();
-    console.log("Database initialized and seeded");
-    return true;
-  } catch (error) {
-    console.error("Database initialization error:", error);
-    console.error("Database initialization failed. Please check your connection settings.");
-    return false;
+  // Helper method to generate a unique order ID
+  generateOrderId() {
+    const prefix = "ORD";
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `${prefix}-${timestamp}-${random}`;
   }
 }
-
-// We'll call this function from the server/index.js file

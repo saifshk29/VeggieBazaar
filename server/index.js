@@ -1,6 +1,7 @@
 import express from "express";
-import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { registerRoutes } from "./routes.js";
+import { setupVite, serveStatic, log } from "./vite.js";
+import { runMigrations } from "./migrate.js";
 
 const app = express();
 app.use(express.json());
@@ -37,23 +38,38 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = await registerRoutes(app);
+  try {
+    // Run database migrations
+    log("Setting up database...");
+    const migrationsSuccessful = await runMigrations();
+    
+    if (!migrationsSuccessful) {
+      log("Database setup failed. Server may not function correctly.");
+    } else {
+      log("Database setup completed successfully.");
+    }
+    
+    const server = await registerRoutes(app);
 
-  app.use((err, _req, res, _next) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    app.use((err, _req, res, _next) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
-  });
+      res.status(status).json({ message });
+      throw err;
+    });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+    // importantly only setup vite in development and after
+    // setting up all the other routes so the catch-all route
+    // doesn't interfere with the other routes
+    if (app.get("env") === "development") {
+      await setupVite(app, server);
+    } else {
+      serveStatic(app);
+    }
+  } catch (error) {
+    log("Error during server initialization:", error);
+    process.exit(1);
   }
 
   // In development or local environment, use port 5000
