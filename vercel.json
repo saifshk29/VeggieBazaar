@@ -1,23 +1,30 @@
 {
   "version": 2,
-  "builds": [
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
     { 
-      "src": "server/index.js", 
-      "use": "@vercel/node" 
+      "source": "/api/(.*)", 
+      "destination": "/server/index.js" 
     },
     { 
-      "src": "client/**", 
-      "use": "@vercel/static" 
+      "source": "/(.*)", 
+      "destination": "/" 
     }
   ],
-  "routes": [
-    { 
-      "src": "/api/(.*)", 
-      "dest": "server/index.js" 
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
     },
-    { 
-      "src": "/(.*)", 
-      "dest": "client/$1" 
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     }
   ],
   "env": {

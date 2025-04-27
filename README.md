@@ -159,6 +159,35 @@ The project includes several files specifically for deployment:
 - **`vercel.json`**: Configures build settings and routing for Vercel
 - **`vercel-package.json`**: Contains optimized build scripts for Vercel deployment
 - **`tsconfig.server.json`**: TypeScript configuration for server compilation
+- **`build.js`**: Custom build script for Vercel deployment
+- **`.env.production`**: Environment variables for production
+
+### One-Click Deployment
+
+For a quick deployment, you can use the Vercel Deploy button:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Ffreshbulk)
+
+### Advanced Deployment Options
+
+If you need to customize your deployment further:
+
+1. **Direct from GitHub**:
+   - Sign up/in to [Vercel](https://vercel.com)
+   - Click "Add New" > "Project"
+   - Connect to GitHub and select your repository
+   - In the build configuration:
+     - Framework Preset: Choose "Other"
+     - Build Command: `npm run vercel-build`
+     - Output Directory: `dist`
+   - Add environment variables if needed
+   - Click "Deploy"
+
+2. **Using Vercel CLI**:
+   - Install Vercel CLI: `npm i -g vercel`
+   - In your project directory run: `vercel`
+   - Follow the CLI instructions to link to your Vercel account
+   - For production deployment: `vercel --prod`
 
 ## 📝 Future Improvements
 
