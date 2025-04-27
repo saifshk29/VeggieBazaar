@@ -117,6 +117,49 @@ To access the admin dashboard, use the following credentials:
 - `POST /api/admin/logout` - Admin logout
 - `GET /api/admin/session` - Check admin session status
 
+## 🚀 Deployment Guide
+
+### Vercel Deployment
+
+FreshBulk is configured for seamless deployment on Vercel. Follow these steps to deploy your application:
+
+1. **Fork or Clone the Repository**
+   - Ensure you have a copy of the project in your GitHub account
+
+2. **Create a Vercel Account**
+   - Sign up at [vercel.com](https://vercel.com) if you don't have an account
+   - Connect your GitHub account to Vercel
+
+3. **Import Your Repository**
+   - Click "Add New" → "Project" in your Vercel dashboard
+   - Select the FreshBulk repository
+   - Vercel will automatically detect the project configuration
+
+4. **Configure Environment Variables**
+   - Set `NODE_ENV` to `production`
+   - Add any other required environment variables
+
+5. **Deploy Settings**
+   - Build Command: Vercel will use the `vercel-build` script
+   - Output Directory: `dist`
+   - Install Command: `npm install`
+
+6. **Deploy**
+   - Click "Deploy" and wait for the build to complete
+   - Vercel will provide you with a deployment URL
+
+7. **Custom Domain (Optional)**
+   - Configure a custom domain in the Vercel project settings
+   - Follow Vercel's instructions to set up DNS records
+
+### Important Deployment Files
+
+The project includes several files specifically for deployment:
+
+- **`vercel.json`**: Configures build settings and routing for Vercel
+- **`vercel-package.json`**: Contains optimized build scripts for Vercel deployment
+- **`tsconfig.server.json`**: TypeScript configuration for server compilation
+
 ## 📝 Future Improvements
 
 - User authentication for customers
