@@ -10,6 +10,7 @@ import TrackOrder from "@/pages/TrackOrder";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { AdminProvider } from "@/context/AdminContext";
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 

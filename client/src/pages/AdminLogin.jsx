@@ -32,7 +32,10 @@ export default function AdminLogin() {
         description: "Welcome to the admin dashboard",
       });
       
-      navigate("/admin/dashboard");
+      // Use setTimeout to ensure context is updated before navigation
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 100);
     },
     onError: (error) => {
       toast({
