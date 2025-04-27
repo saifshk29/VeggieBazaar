@@ -8,7 +8,7 @@ FreshBulk is a full-stack web application that allows customers to order fresh v
 ![Why Choose Us](attached_assets/Screenshot 2025-04-27 213748.png).
 ![Order Page](attached_assets/Screenshot 2025-04-27 213812.png).
 ![Track Order](attached_assets/Screenshot 2025-04-27 213821.png).
-![Admin Dashboard](attached_assets/Screenshot 2025-04-27 213842.png).
+![Admin Dashboard](attached_assets/admindashboard.png).
 ![Admin Dashboard Inventory Management](attached_assets/Screenshot 2025-04-27 213849.png).
 ## 🚀 Features
 
