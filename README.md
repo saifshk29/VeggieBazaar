@@ -3,7 +3,7 @@
 FreshBulk is a full-stack web application that allows customers to order fresh vegetables and fruits in bulk directly from farms. The platform is designed for restaurants, grocery stores, and large families to easily place and track bulk produce orders.
 
 ![FreshBulk Screenshot](screenshot.png)
-
+Screenshot%202025-04-27%20213731.png
 ## 🚀 Features
 
 ### Customer Features
