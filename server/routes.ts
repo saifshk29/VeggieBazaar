@@ -1,13 +1,39 @@
 import express, { type Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { 
-  insertProductSchema, 
-  insertOrderSchema, 
-  insertOrderItemSchema, 
-  orderStatusEnum
-} from "@shared/schema";
 import { z } from "zod";
+import type { Admin } from "@prisma/client";
+
+// Extend express-session to add admin to the session data
+declare module "express-session" {
+  interface SessionData {
+    admin: Omit<Admin, "password">;
+  }
+}
+
+// Zod Schemas for validation
+const insertProductSchema = z.object({
+  name: z.string(),
+  category: z.string(),
+  price: z.number(),
+  unit: z.string(),
+  imageUrl: z.string().optional(),
+});
+
+const insertOrderItemSchema = z.object({
+  productId: z.number(),
+  quantity: z.number().positive(),
+});
+
+const insertOrderSchema = z.object({
+  customerName: z.string(),
+  customerPhone: z.string(),
+  customerAddress: z.string(),
+  city: z.string(),
+  pincode: z.string(),
+});
+
+const orderStatusEnum = z.enum(["pending", "in_progress", "delivered"]);
 
 // Setup session middleware
 import session from "express-session";
@@ -222,11 +248,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Validate order
       const orderSchema = insertOrderSchema.extend({
-        items: z.array(
-          insertOrderItemSchema.extend({
-            quantity: z.number().positive()
-          })
-        ).min(1)
+        items: z.array(insertOrderItemSchema).min(1),
       });
 
       const result = orderSchema.safeParse(req.body);
@@ -253,7 +275,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const orderId = req.params.orderId;
       
       const statusSchema = z.object({
-        status: orderStatusEnum
+        status: orderStatusEnum,
       });
 
       const result = statusSchema.safeParse(req.body);

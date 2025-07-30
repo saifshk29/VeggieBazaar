@@ -1,0 +1,51 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Admin users table
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
+// Products table
+model Product {
+  id         Int         @id @default(autoincrement())
+  name       String
+  category   String
+  price      Decimal
+  unit       String
+  imageUrl   String?
+  orderItems OrderItem[]
+}
+
+// Orders table
+model Order {
+  id              Int         @id @default(autoincrement())
+  orderId         String      @unique
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  city            String
+  pincode         String
+  status          String      @default("pending")
+  createdAt       DateTime    @default(now())
+  orderItems      OrderItem[]
+}
+
+// Order items table for many-to-many relationship
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Decimal
+  price     Decimal // Store price at the time of order
+}
